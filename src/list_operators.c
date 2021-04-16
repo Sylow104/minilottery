@@ -35,6 +35,7 @@ struct person_list *create_list(unsigned int n_entries)
 		goto cleanup_n_array;
 	}
 	to_ret->size = n_entries;
+	log_action("create_list", "Created person list", I_DEBUG);
 	goto exit;
 cleanup_array:
 	free(to_ret->array);
@@ -71,6 +72,7 @@ int destroy_list(struct person_list *to_destroy)
 	}
 	free(to_destroy->array);
 	free(to_destroy);
+	log_action("destroy_list", "Destroyed the target list", I_DEBUG);
 	return 0;
 }
 
@@ -89,7 +91,7 @@ int sanitize_list()
 			i -= 1;
 		}
 	}
-	printf("List has been sanitized\n");
+	log_action("sanitize_list", "List has been sanitized", NONE);
 	print_list(2, 0);
 	return 0;
 }

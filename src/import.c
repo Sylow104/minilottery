@@ -6,8 +6,10 @@
 struct person_list *import_list(const char *filename)
 {
 	struct person_list *to_ret = 0x0;
+	log_action("import_list", "Importing file...", I_DEBUG);
 	FILE *to_read = fopen(filename, "r");
 	if (!to_read) {
+		log_action("import_list", "Unable to open file", NONE);
 		goto exit;
 	}
 	const char *format = "%s\t%u\n";
@@ -39,6 +41,7 @@ cleanup:
 	free(new_name);
 	to_ret = unset_list();
 	fclose(to_read);
+	log_action("import_list", "Imported file to program", I_DEBUG);
 exit:
 	return to_ret;
 }

@@ -2,6 +2,11 @@
 #define __PERSON__
 #include "log.h"
 
+#define TABSIZE 8
+#ifndef _MAX_CHAR_
+extern int max_char_len;
+#endif
+
 struct person
 {
 	char *name;

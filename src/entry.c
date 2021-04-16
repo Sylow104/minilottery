@@ -95,9 +95,5 @@ int print_entry(unsigned int select)
 	name = person_name(*to_print);
 	printf("%s", name);
 	printf("%u", person_count(*to_print));
-	/*
-	printf("++++\nName: %s\nCount: %u\n", name,
-			person_count(*to_print));
-	*/
 	return 0;
 }
