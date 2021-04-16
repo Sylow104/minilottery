@@ -9,7 +9,7 @@ target_link_libraries(minilottery
 	sodium
 )
 
-set(CMAKE_BUILD_TYPE DEBUG)
+set(CMAKE_BUILD_TYPE RELEASE)
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG")
 include_directories(include)
 
