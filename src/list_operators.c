@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static struct person_list *to_operate = 0x0;
+struct person_list *to_operate = 0x0;
 
 struct person **get_array()
 {
@@ -14,17 +14,6 @@ struct person **get_array()
 	return to_operate->array;
 }
 
-struct person **get_entry(unsigned int select) {
-	struct person **array_adr = get_array();
-	if (!array_adr) {
-		return 0x0;
-	}
-	if (to_operate->size > select && select >= 0) {
-		return array_adr + select;
-	} else {
-		return 0x0;
-	}
-}
 
 unsigned int get_list_size() {
 	if (!to_operate) {
@@ -47,6 +36,8 @@ struct person_list *create_list(unsigned int n_entries)
 	}
 	to_ret->size = n_entries;
 	goto exit;
+cleanup_array:
+	free(to_ret->array);
 cleanup_n_array:
 	free(to_ret);
 exit:
@@ -103,79 +94,6 @@ int sanitize_list()
 	return 0;
 }
 
-int add_entry(unsigned int select, char *n_name,
-		unsigned int n_count)
-{
-	struct person **to_use = get_entry(select);
-	if (!to_use) {
-		return 1;
-	}
-	*to_use = create_person(n_name, n_count);
-	return 0;
-}
-
-int delete_entry(unsigned int select)
-{
-	struct person **target = get_entry(select), **next_entry;
-	if (!target) {
-		return -1;
-	}
-	destroy_person(*target);
-	*target = 0x0;
-	int i;
-	for (i = select; i < (to_operate->size - 1); i++) {
-		// get address for next entry
-		next_entry = get_entry(i + 1);
-		// shifts addresses from next_entry to target
-		*target = *next_entry;
-		// target gets the address of next_entry for
-		// reiteration of loop
-		target = next_entry;
-	}
-	// wipes last address of array as we finished shifting
-	*target = 0x0;
-
-	to_operate->size--;
-	return select;
-}
-
-int mod_entry(unsigned int select, int direction)
-{
-	struct person **to_mod = get_entry(select);
-	if (!to_mod) {
-		return 1;
-	}
-	char *message;
-	if (direction > 0) {
-		message = "%s gained a life\n";
-	} else if (direction < 0) {
-		message = "%s lost a life\n";
-	} else {
-		message = "%s's lives stay constant\n";
-	}
-	printf(message, person_name(*to_mod));
-	if (!mod_person_count(*to_mod, direction)) {
-		printf("%s died\n", person_name(*to_mod));
-		delete_entry(select);
-		print_list(2, 0);
-	} else {
-		printf("\n");
-		print_list(1, 0);
-	}
-	return 0;
-}
-
-int print_entry(unsigned int select)
-{
-	struct person **to_print = get_entry(select);
-	if (!to_print) {
-		printf("=No valid entry...=\n");
-		return 1;
-	}
-	printf("++++\nName: %s\nCount: %u\n", person_name(*to_print),
-			person_count(*to_print));
-	return 0;
-}
 
 int print_list(unsigned int time, unsigned int flag)
 {
@@ -185,11 +103,13 @@ int print_list(unsigned int time, unsigned int flag)
 	for (int i = 0; i < get_list_size(); i++) {
 		print_entry(i);
 	}
+#ifdef DEBUG
 	if (time > 1) {
 		sleep(time);
 	} else {
 		sleep(1);
 	}
+#endif
 	if (!flag) {
 		printf("\033c");
 	}

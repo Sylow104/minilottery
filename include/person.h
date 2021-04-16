@@ -1,5 +1,6 @@
 #ifndef __PERSON__
 #define __PERSON__
+#include "log.h"
 
 struct person
 {

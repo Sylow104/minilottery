@@ -9,6 +9,7 @@ target_link_libraries(minilottery
 	sodium
 )
 
+set(CMAKE_BUILD_TYPE DEBUG)
 include_directories(include)
 
 install(TARGETS minilottery

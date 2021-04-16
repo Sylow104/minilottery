@@ -7,12 +7,12 @@ int main(int argc, const char **argv)
 		printf("Usage: %s <filename>\n", *(argv));
 		return -1;
 	}
+	log_setup(I_DEBUG);
 	struct person_list *to_import = import_list(*(argv + 1));
 	if (!to_import) {
-		printf("Cannot find file %s. Exiting.\n", *(argv + 1));
 		return -1;
 	}
 	lottery_runner(to_import);
-
-	return destroy_list(to_import);
+	destroy_list(to_import);
+	log_shutdown();
 }

@@ -6,6 +6,8 @@ struct person *create_person(const char *name, unsigned int count)
 {
 	struct person *to_ret = (struct person*) malloc(sizeof(struct person));
 	if (!to_ret) {
+		log_action("create_person",
+				"Unable to create a person.", NONE);
 		goto exit;
 	}
 	to_ret->name = (char *) malloc(strlen(name) + 1);

@@ -23,7 +23,9 @@ int lottery_runner(struct person_list *lottery_list)
 		return 1;
 	}
 	printf("Welcome to the lottery program!\n");
+#ifdef DEBUG
 	sleep(1);
+#endif
 	printf("\033c");
 	sanitize_list();
 	unsigned int size = get_list_size();
