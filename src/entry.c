@@ -23,19 +23,20 @@ int add_entry(unsigned int select, char *n_name,
 {
 	struct person **to_use = get_entry(select);
 	if (!to_use) {
-		return 1;
+		return -1;
 	}
 	*to_use = create_person(n_name, n_count);
 	return 0;
 }
 
-int delete_entry(unsigned int select)
+struct person *delete_entry(unsigned int select)
 {
-	struct person **target = get_entry(select), **next_entry;
+	struct person **target = get_entry(select), 
+		      *to_return, **next_entry;
 	if (!target) {
-		return -1;
+		return 0x0;
 	}
-	destroy_person(*target);
+	to_return = *target;
 	*target = 0x0;
 	int i;
 	for (i = select; i < (to_operate->size - 1); i++) {
@@ -51,15 +52,13 @@ int delete_entry(unsigned int select)
 	*target = 0x0;
 
 	to_operate->size--;
-	return select;
+	return to_return;
 }
 
-int mod_entry(unsigned int select, int direction)
+struct person *mod_entry(unsigned int select, int direction)
 {
 	struct person **to_mod = get_entry(select);
-	if (!to_mod) {
-		return 1;
-	}
+	struct person *to_return = 0x0;
 	char message[64];
 	char *template;
 	if (direction > 0) {
@@ -71,16 +70,15 @@ int mod_entry(unsigned int select, int direction)
 	}
 	snprintf(message, 64, template, person_name(*to_mod));
 	log_action("mod_entry", message, NONE);
-	if (!mod_person_count(*to_mod, direction)) {
+	if (mod_person_count(*to_mod, direction) <= 0) {
 		snprintf(message, 64, "%s died", person_name(*to_mod));
 		log_action("mod_entry", message, NONE);
-		delete_entry(select);
+		to_return = delete_entry(select);
 		print_list(2, 0);
 	} else {
-		printf("\n");
 		print_list(1, 0);
 	}
-	return 0;
+	return to_return;
 }
 
 int print_entry(unsigned int select)
@@ -93,7 +91,7 @@ int print_entry(unsigned int select)
 		return 1;
 	}
 	name = person_name(*to_print);
-	printf("%s", name);
-	printf("%u", person_count(*to_print));
+	printf("%u ", person_count(*to_print));
+	printf("%s\n", name);
 	return 0;
 }

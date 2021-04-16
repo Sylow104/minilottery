@@ -96,7 +96,6 @@ int sanitize_list()
 	return 0;
 }
 
-
 int print_list(unsigned int time, unsigned int flag)
 {
 	if (!to_operate) {
@@ -105,15 +104,15 @@ int print_list(unsigned int time, unsigned int flag)
 	for (int i = 0; i < get_list_size(); i++) {
 		print_entry(i);
 	}
-#ifdef DEBUG
+#ifndef DEBUG
 	if (time > 1) {
 		sleep(time);
 	} else {
 		sleep(1);
 	}
-#endif
 	if (!flag) {
 		printf("\033c");
 	}
+#endif
 	return 0;
 }

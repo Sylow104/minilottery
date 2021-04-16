@@ -7,8 +7,8 @@
 
 struct person **get_entry(unsigned int);
 int add_entry(unsigned int, char *, unsigned int);
-int mod_entry(unsigned int, int);
-int delete_entry(unsigned int);
+struct person *mod_entry(unsigned int, int);
+struct person *delete_entry(unsigned int);
 int print_entry(unsigned int);
 
 #endif

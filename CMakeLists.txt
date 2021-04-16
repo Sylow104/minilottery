@@ -10,6 +10,7 @@ target_link_libraries(minilottery
 )
 
 set(CMAKE_BUILD_TYPE DEBUG)
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG")
 include_directories(include)
 
 install(TARGETS minilottery
