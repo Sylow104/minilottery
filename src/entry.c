@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 unsigned int random_select(unsigned int size);
 extern struct person_list *to_operate;
@@ -64,12 +65,20 @@ void random_death(char *name, char *buffer)
 		"was yeeted by greg",
 		"got killed by a brown fox",
 		"got their gear ferghus'd",
-		"afk'd too long",
-		"got threendary passworded",
-		"was yeeted by girg"
+		"got doug dimmadome'd",
+		"got 3st passworded",
+		"was yeeted by girg",
+		"dieded",
+		"was sent to the mabi gulag"
 	};
-	static unsigned int previous_value = 8;
+	static unsigned int previous_value = 10;
 	unsigned int select = 0;
+	if ((strcmp("energypill", name) == 0)) {
+		select = 4;
+		goto print;
+	} else {
+		previous_value = 4;
+	}
 test:
 	select = random_select((sizeof(list_msgs))/(sizeof(char *)));
 	if (previous_value == select) {
@@ -77,6 +86,7 @@ test:
 	} else {
 		previous_value = select;
 	}
+print:
 	snprintf(buffer, 64, template, name, list_msgs[select]);
 	return;
 }
@@ -118,7 +128,10 @@ int print_entry(unsigned int select)
 		return 1;
 	}
 	name = person_name(*to_print);
-	printf("%u ", person_count(*to_print));
-	printf("%s\n", name);
+	printf("%u %s ", person_count(*to_print), name);
+	if ((*to_print)->deadly == true) {
+		printf("(deadly) ");
+	}
+	printf("\n");
 	return 0;
 }

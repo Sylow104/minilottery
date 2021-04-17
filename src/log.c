@@ -31,6 +31,7 @@ void log_action(char *function, char *message, enum verbosity_e min_level)
 double_take:
 		if (!function || log_level >= I_DEBUG) {
 			fprintf(direction, "%s: ", function);
+			fflush(direction);
 		}
 		fprintf(direction, "%s \n", message);
 		if (direction != log_file && log_level >= RESULTS) {

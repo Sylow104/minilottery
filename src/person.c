@@ -3,6 +3,7 @@
 #include <string.h>
 
 int max_char_len = 0;
+unsigned int random_select(unsigned int);
 
 int largest_8(int input)
 {
@@ -31,6 +32,7 @@ struct person *create_person(const char *name, unsigned int count)
 	to_ret->name = (char *) malloc(cur_char_len + 1);
 	strcpy(to_ret->name, name);
 	to_ret->count = count;
+	to_ret->deadly = false;
 	log_action("create_person", "Created person", I_DEBUG);
 exit:
 	return to_ret;
@@ -55,7 +57,22 @@ exit:
 
 int mod_person_count(struct person *to_mod, int to_add)
 {
+	char message[64];
+	unsigned int test_deadly = 0;
+	if ((to_mod->count + to_add) == 0) {
+		if (to_mod->deadly == false) {
+			test_deadly = random_select(5);
+			if (test_deadly <= 2) {
+				to_mod->deadly = true;
+				snprintf(message, 64, "%s was sent to deadly",
+						to_mod->name);
+				log_action("mod_person_count", message, NONE);
+				goto exit;
+			}
+		}
+	}
 	to_mod->count += to_add;
+exit:
 	return (to_mod->count);
 }
 

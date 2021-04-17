@@ -1,6 +1,7 @@
 #ifndef __PERSON__
 #define __PERSON__
 #include "log.h"
+#include <stdbool.h>
 
 #define TABSIZE 8
 #ifndef _MAX_CHAR_
@@ -9,6 +10,7 @@ extern int max_char_len;
 
 struct person
 {
+	bool deadly;
 	char *name;
 	unsigned int count;
 };

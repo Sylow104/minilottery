@@ -12,7 +12,7 @@ int main(int argc, const char **argv)
 	if (!to_import) {
 		return -1;
 	}
-	lottery_runner(to_import, 3);
+	lottery_runner(to_import, 4);
 	destroy_list(to_import);
 	log_shutdown();
 }
