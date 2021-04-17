@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sodium.h>
+#include <math.h>
+#include <time.h>
 
 unsigned int winners = 1;
 unsigned int winslots = 1;
@@ -10,9 +12,15 @@ struct person **winner_list = 0x0;
 
 unsigned int random_select(unsigned int size)
 {
+	static int i = 0;
+	/*
 	char test_string[32];
 	randombytes_buf(test_string, 32);
 	unsigned int check = randombytes_uniform(size);
+	*/
+	srand(time(0x0) + i);
+	i = i + 1;
+	unsigned int check = rand() % size;
 	return check;
 }
 
