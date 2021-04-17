@@ -6,6 +6,7 @@ FILE(GLOB C_SOURCE src/*.c)
 add_executable(minilottery ${C_SOURCE}) 
 
 target_link_libraries(minilottery
+	m
 	sodium
 )
 

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 struct person_list *import_list(const char *filename)
 {
@@ -36,6 +37,7 @@ struct person_list *import_list(const char *filename)
 	int insert_count = 0;
 	for (int i = 0; i < get_list_size(); i++) {
 		fscanf(to_read, format, new_name, &new_count);
+		new_count = ceil(new_count);
 		insert_count = (int) new_count;
 		add_entry(i, new_name, insert_count);
 		memset(new_name, 0, 32);
