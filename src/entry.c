@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+unsigned int random_select(unsigned int size);
 extern struct person_list *to_operate;
 
 struct person **get_entry(unsigned int select) {
@@ -55,6 +56,31 @@ struct person *delete_entry(unsigned int select)
 	return to_return;
 }
 
+void random_death(char *name, char *buffer)
+{
+	const static char *template = "%s %s";
+	const static char *list_msgs[] = {
+		"was sent to the shadow realm",
+		"was yeeted by greg",
+		"got killed by a brown fox",
+		"got their gear ferghus'd",
+		"afk'd too long",
+		"got threendary passworded",
+		"was yeeted by girg"
+	};
+	static unsigned int previous_value = 8;
+	unsigned int select = 0;
+test:
+	select = random_select((sizeof(list_msgs))/(sizeof(char *)));
+	if (previous_value == select) {
+		goto test;
+	} else {
+		previous_value = select;
+	}
+	snprintf(buffer, 64, template, name, list_msgs[select]);
+	return;
+}
+
 struct person *mod_entry(unsigned int select, int direction)
 {
 	struct person **to_mod = get_entry(select);
@@ -71,7 +97,7 @@ struct person *mod_entry(unsigned int select, int direction)
 	snprintf(message, 64, template, person_name(*to_mod));
 	log_action("mod_entry", message, NONE);
 	if (mod_person_count(*to_mod, direction) <= 0) {
-		snprintf(message, 64, "%s died", person_name(*to_mod));
+		random_death(person_name(*to_mod), message);
 		log_action("mod_entry", message, NONE);
 		to_return = delete_entry(select);
 		print_list(2, 0);
@@ -80,6 +106,7 @@ struct person *mod_entry(unsigned int select, int direction)
 	}
 	return to_return;
 }
+
 
 int print_entry(unsigned int select)
 {
