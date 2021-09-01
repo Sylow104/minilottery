@@ -1,9 +1,9 @@
 #include "person.h"
+#include "os.h"
 #include <stdlib.h>
 #include <string.h>
 
 int max_char_len = 0;
-unsigned int random_select(unsigned int);
 
 int largest_8(int input)
 {
@@ -61,8 +61,8 @@ int mod_person_count(struct person *to_mod, int to_add)
 	unsigned int test_deadly = 0;
 	if ((to_mod->count + to_add) == 0) {
 		if (to_mod->deadly == false) {
-			test_deadly = random_select(5);
-			if (test_deadly <= 2) {
+			test_deadly = __rand(5);
+			if (test_deadly <= 1) {
 				to_mod->deadly = true;
 				snprintf(message, 64, "%s was sent to deadly",
 						to_mod->name);

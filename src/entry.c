@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
-unsigned int random_select(unsigned int size);
+unsigned int __rand(unsigned int size);
 extern struct person_list *to_operate;
 
 struct person **get_entry(unsigned int select) {
@@ -79,7 +79,7 @@ void random_death(char *name, char *buffer)
 		previous_value = 4;
 	}
 test:
-	select = random_select((sizeof(list_msgs))/(sizeof(char *)));
+	select = __rand((sizeof(list_msgs))/(sizeof(char *)));
 	if (previous_value == select) {
 		goto test;
 	} else {
@@ -109,9 +109,9 @@ struct person *mod_entry(unsigned int select, int direction)
 		random_death(person_name(*to_mod), message);
 		log_action("mod_entry", message, NONE);
 		to_return = delete_entry(select);
-		print_list(2, 0);
+		print_list(2000, 0);
 	} else {
-		print_list(1, 0);
+		print_list(1000, 0);
 	}
 	return to_return;
 }

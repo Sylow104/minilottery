@@ -1,35 +1,16 @@
 #include "lottery.h"
 #include "person.h"
+#include "os.h"
 #include <stdio.h>
-#ifdef UNIX
-#include <sodium.h>
-#include <math.h>
-#endif
 #include <time.h>
 
 unsigned int winners = 1;
 unsigned int winslots = 1;
 struct person **winner_list = 0x0;
 
-unsigned int random_select(unsigned int size)
-{
-	static int i = 0;
-#ifdef UNIX
-	static char test_string[32];
-	randombytes_buf(test_string, 32);
-	unsigned int check = randombytes_uniform(size);
-#else
-	srand(time(0x0) + i);
-	i = i + 1;
-	srand(rand() % size);
-	unsigned int check = rand() % size;
-#endif
-	return check;
-}
-
 int random_decrement(unsigned int size)
 {
-	unsigned int rand_int = random_select(size);
+	unsigned int rand_int = __rand(size);
 	struct person *holder = mod_entry(rand_int, -1);
 	if (holder) {
 		if (size > winners) {
@@ -45,15 +26,9 @@ int random_decrement(unsigned int size)
 int lottery_runner(struct person_list *lottery_list, unsigned int n_winners)
 {
 	int i = 0;
-#ifdef UNIX
-	if (sodium_init() < 0 || set_list(lottery_list)) {
+	if (__rand_setup() < 0 || set_list(lottery_list)) {
 		return 1;
 	}
-#else
-	if (set_list(lottery_list)) {
-		return 1;
-	}
-#endif
 	if (n_winners < 0) {
 		log_action("lottery_runner", "I need at least one winner",
 				NONE);
@@ -70,8 +45,8 @@ int lottery_runner(struct person_list *lottery_list, unsigned int n_winners)
 	log_action("lottery_runner", "Welcome to the lottery program!",
 			NONE);
 #ifndef DEBUG
-	sleep(1);
-	printf("\033c");
+	__sleep(1000);
+	__clear_screen();
 #endif
 	sanitize_list();
 	unsigned int size = get_list_size();
@@ -81,7 +56,7 @@ int lottery_runner(struct person_list *lottery_list, unsigned int n_winners)
 	} while (size > 1);
 	*(winner_list) = *get_entry(0);
 #ifndef DEBUG
-	printf("\033c");
+	__clear_screen();
 #endif
 	log_action("lottery_runner", "Winner(s) of the lottery:", NONE);
 	char message[64];

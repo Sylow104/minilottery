@@ -1,5 +1,6 @@
 #include "list_operators.h"
 #include "person.h"
+#include "os.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -91,7 +92,7 @@ int sanitize_list()
 		}
 	}
 	log_action("sanitize_list", "List has been sanitized", NONE);
-	print_list(2, 0);
+	print_list(2000, 0);
 	return 0;
 }
 
@@ -105,12 +106,12 @@ int print_list(unsigned int time, unsigned int flag)
 	}
 #ifndef DEBUG
 	if (time > 1) {
-		sleep(time);
+		__sleep(time);
 	} else {
-		sleep(1);
+		__sleep(1000);
 	}
 	if (!flag) {
-		printf("\033c");
+		__clear_screen();
 	}
 #endif
 	return 0;
