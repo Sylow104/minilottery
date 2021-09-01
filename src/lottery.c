@@ -1,9 +1,10 @@
 #include "lottery.h"
 #include "person.h"
 #include <stdio.h>
-#include <unistd.h>
+#ifdef UNIX
 #include <sodium.h>
 #include <math.h>
+#endif
 #include <time.h>
 
 unsigned int winners = 1;
@@ -13,15 +14,16 @@ struct person **winner_list = 0x0;
 unsigned int random_select(unsigned int size)
 {
 	static int i = 0;
+#ifdef UNIX
 	static char test_string[32];
 	randombytes_buf(test_string, 32);
 	unsigned int check = randombytes_uniform(size);
-	/*
+#else
 	srand(time(0x0) + i);
 	i = i + 1;
 	srand(rand() % size);
 	unsigned int check = rand() % size;
-	*/
+#endif
 	return check;
 }
 
@@ -43,9 +45,15 @@ int random_decrement(unsigned int size)
 int lottery_runner(struct person_list *lottery_list, unsigned int n_winners)
 {
 	int i = 0;
+#ifdef UNIX
 	if (sodium_init() < 0 || set_list(lottery_list)) {
 		return 1;
 	}
+#else
+	if (set_list(lottery_list)) {
+		return 1;
+	}
+#endif
 	if (n_winners < 0) {
 		log_action("lottery_runner", "I need at least one winner",
 				NONE);

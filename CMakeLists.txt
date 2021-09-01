@@ -5,10 +5,12 @@ project(minilottery VERSION 1.0)
 FILE(GLOB C_SOURCE src/*.c)
 add_executable(minilottery ${C_SOURCE}) 
 
+if(UNIX)
 target_link_libraries(minilottery
 	m
 	sodium
 )
+endif()
 
 set(CMAKE_BUILD_TYPE RELEASE)
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG")
@@ -21,3 +23,5 @@ include(InstallRequiredSystemLibraries)
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(CPACK_GENERATOR RPM)
 include(CPack)
+
+set(_CRT_SECURE_NO_WARNINGS)
