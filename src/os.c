@@ -43,7 +43,7 @@ int __clear_screen()
 #ifdef UNIX
 	printf("\033c");
 #else
-	printf("cls %d\n", system("cls"));
+	system("cls");
 #endif
 	return 0;
 }
