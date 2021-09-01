@@ -21,9 +21,6 @@ create a directory called `build` and `cd` into it. call `cmake ../`, then invok
 ```
 where `\t` and `\n` denote tab and newline.
 
-# cleanup
-run `make clean` to clean up files
-
 # todo
 - add flags to modify flag values (debug, number of winners, etc).
 - ~~clean up code, make portable for Windows usage.~~
