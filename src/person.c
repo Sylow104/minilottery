@@ -61,12 +61,13 @@ int mod_person_count(struct person *to_mod, int to_add)
 	unsigned int test_deadly = 0;
 	if ((to_mod->count + to_add) == 0) {
 		if (to_mod->deadly == false) {
-			test_deadly = __rand(5);
+			test_deadly = __rand(10);
 			if (test_deadly <= 1) {
 				to_mod->deadly = true;
 				snprintf(message, 64, "%s was sent to deadly",
 						to_mod->name);
 				log_action("mod_person_count", message, NONE);
+				__sleep(2000);
 				goto exit;
 			}
 		}
